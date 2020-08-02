@@ -32,9 +32,43 @@ router.post('/register',async(req,res)=>{
         });
         
         newUser.save()
-        .then(()=>res.json('User added!'))
+        .then((user)=>res.json({user:user}))
         .catch(err=>res.status(400).json({Error: err}));
     }catch(err){
         return res.status(500).json({Error:err});
     }
 });
+
+router.post('/login',async(req,res)=>{
+    try{
+        const {username,password}=req.body;
+        if(!username||!password){
+            return res.status(400).json({Error:"Not all fields have been entered"});
+        }
+    User.findOne({username:username}).then(user=>{
+        if(!user){
+            return res.status(400).json({Error:"Invalid Login"});
+        }
+        bcrypt.compare(password,user.password).then(isMatch=>{
+            if(isMatch){
+                const payload={
+                    username:user.username,
+                    id:user._id
+                };
+                const token="Bearer "+jwt.sign(payload,process.env.SECRET,{expiresIn:43200});
+                return res.status(200).json({token,payload});
+            }else{
+                return res.status(400).json({Error:"Invalid Login"});
+
+            }
+
+        });
+
+    });
+    }catch(err){
+        return res.status(500).json({Error:err});
+
+    }
+});
+
+module.exports=router;

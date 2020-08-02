@@ -1,25 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
+import React,{useState, useEffect} from 'react';
+import { BrowserRouter as Router, Route ,Switch,Redirect} from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+// import Axios from 'axios';
+import './App.css';
+import Login from "./components/login.component";
+import UserContext from "./context/user.context";
+// import TodoApp from "./Components/todo-app.component";
 function App() {
+  const [userData,setUserData]=useState({
+      token:undefined,
+      user:undefined,
+  });
+
+  useEffect(()=>{
+  
+  },[]);
+ 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    <Router>
+      <UserContext.Provider value={{userData,setUserData}}>
+        <div className="parent container-fluid">
+
+
+          <br />
+          <Switch>
+          <Route path={["/", "/login"]} exact component={Login} />
+          </Switch>
+        </div>
+      </UserContext.Provider>
+    </Router>
   );
 }
 
