@@ -7,27 +7,35 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
 import Login from "./components/login.component";
 import UserContext from "./context/user.context";
-// import TodoApp from "./Components/todo-app.component";
+ import MovieApp from "./components/movie-app.component";
+ import HomePage from "./components/home-page.component";
+ import Navbar from "./components/navbar.component";
+
 function App() {
   const [userData,setUserData]=useState({
       token:undefined,
       user:undefined,
   });
+  const [loggedIn, setLoggedIn] = useState();
+
 
   useEffect(()=>{
-  
+    setLoggedIn(localStorage.getItem('jwt'));
   },[]);
  
   return (
 
     <Router>
       <UserContext.Provider value={{userData,setUserData}}>
-        <div className="parent container-fluid">
+        <div className="container-fluid">
+    <Navbar isAuthenticated={loggedIn}/>
 
-
-          <br />
           <Switch>
-          <Route path={["/", "/login"]} exact component={Login} />
+          <Route path="/" exact component={HomePage} />
+
+          <Route path= "/login" exact component={Login} />
+          <Route path="/app" exact component={MovieApp}/>
+
           </Switch>
         </div>
       </UserContext.Provider>

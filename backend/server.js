@@ -13,6 +13,7 @@ app.use(cors());
 app.use(bodyparser.json());
 app.use(passport.initialize());
 
+
 require('./config/passport')(passport);
 
 const uri=process.env.ATLAS_URI;
@@ -30,6 +31,12 @@ app.use('/api/users',usersRouter);
 
 const testRouter=require('./routes/test');
 app.use('/api/protected',passport.authenticate('jwt', {session: false}),testRouter);
+
+
+// a;pp.get('/app',passport.authenticate('jwt', {session: false},{ failureRedirect: "/" }),  function(req, res) {
+//     console.log("it working");
+//     window.location="/app";
+//   });
 
 app.listen(port,()=>{
     console.log('Server is running on port: '+port);

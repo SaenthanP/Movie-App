@@ -4,7 +4,7 @@ const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken');
 
 router.post('/protected',async(req,res)=>{
-  res.status(200).json("SUCESS BOI");
+  res.status(200).json("SUCESS BOI"+req.user);
    
 });
 

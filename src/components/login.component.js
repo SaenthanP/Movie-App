@@ -1,8 +1,9 @@
-import React, { Component, useContext, useState } from 'react';
+import React, { Component, useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../App.css';
 import UserContext from "../context/user.context";
-// import Axios from 'axios';
+import Axios from 'axios';
+import User from '../'
 // import Error from './error.component';
 export default function Login() {
     const [username, setUsername] = useState();
@@ -10,27 +11,46 @@ export default function Login() {
     const [error, setError] = useState();
     const { setUserData } = useContext(UserContext);
 
+    // useEffect(() => {
+    //     console.log(localStorage.getItem('jwt'));
+    // const isValid=Axios.get("http://localhost:5000/api/users/isAuthenticated",{ headers: { "Authorization": localStorage.getItem('jwt') } })
+    //         .then(response=>{
+    //             console.log("yes "+response.data);
+    //             //  window.location='/app';
+    //             return response.data;
+    //          });
+    //          if(!isValid.data){
+    //             // window.location='/';
+
+    //          }
+
+    // }, []);
     const onSubmit = async (e) => {
 
-        // try {
-        //     e.preventDefault();
+        try {
+            e.preventDefault();
 
-        //     const loginUser = {
-        //         username,
-        //         password,
+            const loginUser = {
+                username,
+                password,
 
-        //     }
-        //     const loginRes = await Axios.post("http://localhost:5000/users/login", loginUser);
-        //     setUserData({
-        //         token: loginRes.data.token,
-        //         user: loginRes.data.user,
-        //     });
-
-        //     localStorage.setItem("auth-token", loginRes.data.token);
-        //     window.location = '/app';
-        // } catch (err) {
-        //     err.response.data.Error && setError(err.response.data.Error);
-        // }
+            }
+            const loginRes = await Axios.post("http://localhost:5000/api/users/login", loginUser);
+           
+            localStorage.setItem('jwt',loginRes.data.token);
+           console.log(loginRes.data.payload);
+          
+            //  Axios.get("http://localhost:5000/app",{ headers: { "Authorization": localStorage.getItem('jwt') } });
+            // setUserData({
+            //     token: loginRes.data.token,
+            //     user: loginRes.data.user,
+            // });
+            console.log(loginRes.data.token);
+            window.location = '/app';
+        } catch (err) {
+            console.log(err)
+            // err.response.data.Error && setError(err.response.data.Error);
+        }
     }
 
     return (
