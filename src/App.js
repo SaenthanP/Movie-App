@@ -10,6 +10,7 @@ import UserContext from "./context/user.context";
  import MovieApp from "./components/movie-app.component";
  import HomePage from "./components/home-page.component";
  import Navbar from "./components/navbar.component";
+ import Register from "./components/register.component";
 
 function App() {
   const [userData,setUserData]=useState({
@@ -34,6 +35,8 @@ function App() {
           <Route path="/" exact component={HomePage} />
 
           <Route path= "/login" exact component={Login} />
+          <Route path="/register" exact component={Register}/>
+
           <Route path="/app" exact component={MovieApp}/>
 
           </Switch>
