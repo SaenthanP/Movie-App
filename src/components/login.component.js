@@ -11,20 +11,12 @@ export default function Login() {
     const [error, setError] = useState();
     const { setUserData } = useContext(UserContext);
 
-    // useEffect(() => {
-    //     console.log(localStorage.getItem('jwt'));
-    // const isValid=Axios.get("http://localhost:5000/api/users/isAuthenticated",{ headers: { "Authorization": localStorage.getItem('jwt') } })
-    //         .then(response=>{
-    //             console.log("yes "+response.data);
-    //             //  window.location='/app';
-    //             return response.data;
-    //          });
-    //          if(!isValid.data){
-    //             // window.location='/';
+    useEffect(() => {
+        if(localStorage.getItem('jwt')){
+            window.location='/app';
+        }
 
-    //          }
-
-    // }, []);
+    }, []);
     const onSubmit = async (e) => {
 
         try {

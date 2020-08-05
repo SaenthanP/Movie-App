@@ -29,8 +29,8 @@ Only put ,passport.authenticate('jwt',{session:false}) for routes that have to b
 const usersRouter=require('./routes/users');
 app.use('/api/users',usersRouter);
 
-const testRouter=require('./routes/test');
-app.use('/api/protected',passport.authenticate('jwt', {session: false}),testRouter);
+const movieRouter=require('./routes/movie-routes');
+app.use('/api/protected',passport.authenticate('jwt', {session: false}),movieRouter);
 
 
 // a;pp.get('/app',passport.authenticate('jwt', {session: false},{ failureRedirect: "/" }),  function(req, res) {

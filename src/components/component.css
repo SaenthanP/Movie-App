@@ -6,6 +6,7 @@ div.section1{
 
  
 }
+
 .center-block {
     padding-top: 2rem;
 
@@ -30,6 +31,35 @@ div.section2{
 color:#ffffff;
 text-align: center;
 }
+
+.search-btn{
+    border-radius: 1rem;
+    margin-bottom: 10px;
+  padding: 0 5rem;
+  margin-top: 20px;
+
+}
+.movie-search{
+    width: 20rem;
+    margin-left: 6rem;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+.movie-page{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container.card-container{
+    
+    background-color: antiquewhite;
+   
+}
+div.card-container {
+    display: inline-block;
+    padding: 1,1,1,1;
+
+}
 @media(max-width:700px){
    
 
@@ -39,5 +69,12 @@ text-align: center;
     .title-header{
         padding-top: 1rem;
         padding-bottom: 1rem;
+    }
+    .movie-search{
+        width: 15rem;
+    }
+    .search-btn{
+        padding: 0 2rem;
+        margin-right: 20px;
     }
   }
