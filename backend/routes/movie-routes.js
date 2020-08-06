@@ -26,7 +26,14 @@ router.post('/get_popular_movies', async (req, res) => {
   res.json(apiRes.data.results);
 
 });
+router.post('/test', async (req, res) => {
 
+  
+
+  //  console.log(apiRes.data);
+  res.json("test");
+
+});
 
 
 

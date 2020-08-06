@@ -16,14 +16,17 @@ export default function MovieApp() {
     useEffect(() => {
         console.log(localStorage.getItem('jwt'));
         const checkLoggedIn = async () => {
-
+            try{
             await Axios.get("http://localhost:5000/api/users/isAuthenticated", { headers: { "Authorization": localStorage.getItem('jwt') } })
                 .then(res => {
-                    if (!res.data) {
-                        window.location = '/';
-                    }
+                    
                     return res.data;
                 });
+            }catch(err){
+                    window.location = '/';
+                    localStorage.removeItem('jwt');
+
+                }
 
             //  if(!isLoggedIn){
             //     window.location='/';
@@ -35,8 +38,11 @@ export default function MovieApp() {
 
         checkLoggedIn();
         
-        const popularMovies=await Axios.get ("http://localhost:5000/api/protected/get_popular_movies", { headers: { "Authorization": localStorage.getItem('jwt') } });
-        setMovies(popularMovies);
+        const popularMovies=Axios.post ("http://localhost:5000/api/protected/test", { headers: { "Authorization": localStorage.getItem('jwt') } });
+        console.log(popularMovies);
+        // setMovies(popularMovies);
+        // {movies.map(currentMovie =>  {console.log(currentMovie)})}
+
         // const res=Axios.get("http://localhost:5000/api/users/isAuthenticated",{ headers: { "Authorization": localStorage.getItem('jwt') } });
         //   console.log(res.data);
     }, []);
