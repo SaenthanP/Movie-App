@@ -12,9 +12,24 @@ export default function Login() {
     const { setUserData } = useContext(UserContext);
 
     useEffect(() => {
-        if(localStorage.getItem('jwt')){
-            window.location='/app';
+        const checkLoggedIn= async()=>{
+            Axios({
+                method: 'get',
+                url: 'http://localhost:5000/api/users/isAuthenticated',
+                headers: {
+                    'Authorization': localStorage.getItem('jwt'),
+                }
+            }).then(res=>{
+                window.location = '/app';
+
+            }).catch(err=>{
+                window.location = '/login';
+                localStorage.removeItem('jwt');
+            });
         }
+        // if(localStorage.getItem('jwt')){
+        //     window.location='/app';
+        // }
 
     }, []);
     const onSubmit = async (e) => {

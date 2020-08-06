@@ -30,7 +30,7 @@ const usersRouter=require('./routes/users');
 app.use('/api/users',usersRouter);
 
 const movieRouter=require('./routes/movie-routes');
-app.use('/api/protected',passport.authenticate('jwt', {session: false}),movieRouter);
+app.use('/api/protected', passport.authenticate('jwt', {session: false}),movieRouter);
 
 
 // a;pp.get('/app',passport.authenticate('jwt', {session: false},{ failureRedirect: "/" }),  function(req, res) {
