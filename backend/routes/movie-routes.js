@@ -15,8 +15,10 @@ router.post('/get_search', async (req, res) => {
 let cachedData;
 let cacheTime;
 router.post('/get_popular_movies', async (req, res) => {
-
-  if (cacheTime && cacheTime > Date.now() + 600000) {
+  // 600000
+  var cacheTimeDifference=Date.now()-cacheTime;
+  if (cacheTime && cacheTimeDifference<600000) {
+    console.log("cached data");
     return res.json(cachedData);
   }
   const apiRes = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=' + process.env.MOVIE_API_KEY + '&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false')
@@ -24,7 +26,9 @@ router.post('/get_popular_movies', async (req, res) => {
 
   cachedData = apiRes.data.results;
   cacheTime = Date.now();
-  res.json(apiRes.data.results);
+  console.log("api data");
+
+  return res.json(apiRes.data.results);
 
 });
 
