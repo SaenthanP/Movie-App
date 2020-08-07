@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../App.css';
 import UserContext from "../context/user.context";
@@ -11,6 +11,31 @@ export default function Register() {
     const [error, setError] = useState();
 
     const { setUserData } = useContext(UserContext);
+
+    useEffect(() => {
+        const checkLoggedIn= async()=>{
+            Axios({
+                method: 'get',
+                url: 'http://localhost:5000/api/users/isAuthenticated',
+                headers: {
+                    'Authorization': localStorage.getItem('jwt'),
+                }
+            }).then(res=>{
+                window.location = '/app';
+
+            }).catch(err=>{
+                localStorage.removeItem('jwt');
+
+                window.location = '/register';
+            });
+        }
+        checkLoggedIn();
+        // if(localStorage.getItem('jwt')){
+        //     window.location='/app';
+        // }
+
+    }, []);
+
     const onSubmit = async (e) => {
 
         try {

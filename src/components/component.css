@@ -53,7 +53,7 @@ text-align: center;
 .container.card-container{
     
     background-color: antiquewhite;
-   
+   margin-bottom: 20px;
 }
 div.card-container {
     display: inline-block;

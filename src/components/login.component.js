@@ -23,10 +23,12 @@ export default function Login() {
                 window.location = '/app';
 
             }).catch(err=>{
-                window.location = '/login';
                 localStorage.removeItem('jwt');
+
+                window.location = '/login';
             });
         }
+        checkLoggedIn();
         // if(localStorage.getItem('jwt')){
         //     window.location='/app';
         // }
