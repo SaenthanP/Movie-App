@@ -39,12 +39,18 @@ text-align: center;
   margin-top: 20px;
 
 }
+.sort-drop-down{
+    margin-top: 20px;
+    margin-left: 1.4rem;
+
+}
 .movie-search{
     width: 20rem;
     margin-left: 6rem;
     margin-top: 20px;
     border-radius: 8px;
 }
+
 .movie-page{
     display: flex;
     align-items: center;
@@ -63,6 +69,25 @@ div.card-container {
 img.moviePoster{
     padding:8px;
 }
+.movie-poster-button{
+    border:0;
+    background-color: Transparent;
+    padding: 0;
+}
+
+.movie-poster-button:hover {
+
+
+  transition-timing-function: ease-out;
+
+  transition: 0.25s;
+
+    transform: scale(1.1) perspective(0.5px)
+  }
+  .backdrop
+  {
+      opacity:0.5 !important;
+  }
 @media(max-width:700px){
    
 

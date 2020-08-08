@@ -13,6 +13,7 @@ export default function Login() {
 
     useEffect(() => {
         const checkLoggedIn= async()=>{
+            if(localStorage.getItem('jwt')){
             Axios({
                 method: 'get',
                 url: 'http://localhost:5000/api/users/isAuthenticated',
@@ -23,10 +24,11 @@ export default function Login() {
                 window.location = '/app';
 
             }).catch(err=>{
+                window.location = '/login';
                 localStorage.removeItem('jwt');
 
-                window.location = '/login';
             });
+        }
         }
         checkLoggedIn();
         // if(localStorage.getItem('jwt')){

@@ -14,6 +14,8 @@ export default function Register() {
 
     useEffect(() => {
         const checkLoggedIn= async()=>{
+            if(localStorage.getItem('jwt')){
+
             Axios({
                 method: 'get',
                 url: 'http://localhost:5000/api/users/isAuthenticated',
@@ -28,6 +30,7 @@ export default function Register() {
 
                 window.location = '/register';
             });
+        }
         }
         checkLoggedIn();
         // if(localStorage.getItem('jwt')){
