@@ -17,18 +17,28 @@ export default function MovieModal(props) {
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-             {/* {props.movie.title} */}
+             {props.movie.title}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h4>Centered Modal</h4>
+            <div className="row">
+              <div className="col-sm-12 col-md-4">
+              <img className="moviePoster movie-card" key={props.movie.key} src={props.movie.poster_path ? "https://image.tmdb.org/t/p/original" + props.movie.poster_path : require("../Assets/no_poster.jpg")} width="200px" height="300px"  ></img>
+              </div>
+              <div className="col-sm-12 col-md-8">
+              <h4>Description</h4>
             <p>
-              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-              consectetur ac, vestibulum at eros.
+            {props.movie.overview}
+
             </p>
+              </div>
+
+            </div>
+           
           </Modal.Body>
           <Modal.Footer>
+          <Button >Add to favourites</Button>
+
             <Button onClick={props.onHide}>Close</Button>
           </Modal.Footer>
         </Modal>

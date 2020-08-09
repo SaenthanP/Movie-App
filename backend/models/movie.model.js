@@ -2,19 +2,23 @@ const mongoose=require('mongoose');
 
 const Schema=mongoose.Schema;
 
-const userSchema=new Schema({
-    username:{
+const movieSchema=new Schema({
+    title:{
         type:String,
         required:true,
         trim:true,
-        minlength:3
     },
-    password:{
+   userId:{
         type:String,
         required:true,
         trim:true,
-        minlength:8
+    },
+    movieId:{
+        type:String,
+        required:true,
+        trim:true,
     }
+
 });
 
 const User =mongoose.model('User',userSchema);

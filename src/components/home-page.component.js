@@ -1,12 +1,41 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 // import { Link } from 'react-router-dom';
 import '../App.css';
 
 import UserContext from "../context/user.context";
-// import Axios from 'axios';
+import Axios from 'axios';
 // import User from '../'
 // import Error from './error.component';
 export default function HomePage() {
+
+
+  useEffect(() => {
+
+    const checkLoggedIn = async () => {
+        if (localStorage.getItem('jwt')) {
+
+            Axios({
+                method: 'get',
+                url: 'http://localhost:5000/api/users/isAuthenticated',
+                headers: {
+                    'Authorization': localStorage.getItem('jwt'),
+                }
+            }).catch(err => {
+                window.location = '/';
+                localStorage.removeItem('jwt');
+            });
+        }
+
+    }
+    checkLoggedIn();
+
+
+
+
+
+
+
+}, []);
 
 
     const onSubmit = async (e) => {

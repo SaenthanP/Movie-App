@@ -13,7 +13,7 @@ require('dotenv').config();
 export default function MovieApp() {
     const [movies, setMovies] = useState([]);
     const [movieTitle, setMovieTitle] = useState();
-    const [selectedMovie, setSelectedMovie] = useState();
+    const [selectedMovie, setSelectedMovie] = useState([]);
 
     const [error, setError] = useState(undefined);
 
@@ -98,18 +98,23 @@ export default function MovieApp() {
 
         }
     }
-    const imageClick = (props) => {
-        setSelectedMovie(props.movie);
-console.log(props.movie.title);
-        setModalShow(true);
+    const imageClick = async(movie) => {
+
+       
+        console.log(movie);
+        setSelectedMovie(movie);
+     
+        // console.log(selectedMovie);
+        // console.log(selectedMovie.title)
+         setModalShow(true);
+
 
     }
 
     const Movies = (props) => ((
 
 <>
-        <button type="button" className="movie-poster-button" onClick={() => imageClick(props)}><img className="moviePoster movie-card" key={props.movie.key} src={props.movie.poster_path ? "https://image.tmdb.org/t/p/original" + props.movie.poster_path : require("../Assets/no_poster.jpg")} width="200px" height="300px"  ></img></button>
-      
+        <button type="button" className="movie-poster-button" onClick={() => imageClick(props.movie)}><img className="moviePoster movie-card" key={props.movie.key} src={props.movie.poster_path ? "https://image.tmdb.org/t/p/original" + props.movie.poster_path : require("../Assets/no_poster.jpg")} width="200px" height="300px"  ></img></button>  
       </>
     ));
    
