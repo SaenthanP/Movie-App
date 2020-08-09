@@ -14,12 +14,12 @@ const movieSchema=new Schema({
         trim:true,
     },
     movieId:{
-        type:String,
+        type:Number,
         required:true,
         trim:true,
-    }
+    },
 
 });
 
-const User =mongoose.model('User',userSchema);
-module.exports=User;
+const Movie =mongoose.model('Movie',movieSchema);
+module.exports=Movie;

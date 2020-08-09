@@ -51,7 +51,7 @@ export default function MovieApp() {
 
     const readPopularMovies = async () => {
         await Axios({
-            method: 'post',
+            method: 'get',
             url: 'http://localhost:5000/api/protected/get_popular_movies',
             headers: {
                 'Authorization': localStorage.getItem('jwt'),
