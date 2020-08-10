@@ -26,7 +26,8 @@ export default function Login(props) {
 if(props.isAuthenticated===null){
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-            <Navbar.Brand >Movie-Flix</Navbar.Brand>
+            
+            <Navbar.Brand href="/">Movie-Flix</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
 
@@ -43,11 +44,13 @@ if(props.isAuthenticated===null){
 }else{
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-            <Navbar.Brand >Movie-Flix</Navbar.Brand>
+            <Navbar.Brand href="/app">Movie-Flix</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
 
                 <Nav className="mr-auto">
+                        <Link to="/favourites" className="nav-link">Favourites</Link>
+
                     <Link to="/" className="nav-link" onClick={logout}>Sign Out</Link>
 
                 </Nav>

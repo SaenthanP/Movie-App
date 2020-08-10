@@ -61,16 +61,27 @@ router.post('/add', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-  const movieToDelete = await Movie.findOne({ userId: req.user._id, _id: req.params.id });
+  const movieToDelete = await Movie.findOne({ userId: req.user._id, movieId: req.params.id });
 
   if (!movieToDelete) {
     return res.status(400).json({ Error: "Movie not found" });
   }
-  const deletedMovie = await Movie.findByIdAndDelete(req.params.id);
+  const deletedMovie = await Movie.findByIdAndDelete(movieToDelete._id);
   const movies = await Movie.find({ userId: req.user._id });
   return res.json(movies);
 });
 
+router.post('/isFavouriteFound', async (req, res) => {
+  
+  let { movieId } = req.body;
+
+
+  const isTaken = await Movie.findOne({ movieId: movieId, userId: req.user._id });
+  if (isTaken) {
+    return res.json(true);
+  }
+  return res.json(false);
+});
 
 
 router.post('/test', async (req, res) => {

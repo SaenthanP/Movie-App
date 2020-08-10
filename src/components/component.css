@@ -88,6 +88,14 @@ img.moviePoster{
   {
       opacity:0.5 !important;
   }
+  .container.favourite{
+    background-color: antiquewhite;
+  }
+  .favourite-table{
+    margin-top: 1rem;
+    text-align: center;
+
+  }
 @media(max-width:700px){
    
 

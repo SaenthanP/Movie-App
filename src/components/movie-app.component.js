@@ -126,6 +126,7 @@ export default function MovieApp() {
         show={modalShow}
         onHide={() => setModalShow(false)}
        movie={selectedMovie}
+       
       />
             <form onSubmit={onSubmit} className="form-add-task">
          

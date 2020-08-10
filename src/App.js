@@ -11,6 +11,7 @@ import UserContext from "./context/user.context";
  import HomePage from "./components/home-page.component";
  import Navbar from "./components/navbar.component";
  import Register from "./components/register.component";
+import FavouritePage from './components/favourite.component';
 
 function App() {
   const [userData,setUserData]=useState({
@@ -38,6 +39,7 @@ function App() {
           <Route path="/register" exact component={Register}/>
 
           <Route path="/app" exact component={MovieApp}/>
+          <Route path="/favourites" exact component={FavouritePage}/>
 
           </Switch>
         </div>
