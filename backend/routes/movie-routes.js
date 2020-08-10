@@ -43,7 +43,7 @@ router.get('/favourites', async (req, res) => {
 });
 
 router.post('/add', async (req, res) => {
-  let { title, movieId } = req.body;
+  let { title, movieId,description,posterPath } = req.body;
 
 
   const isTaken = await Movie.findOne({ movieId: movieId, userId: req.user._id });
@@ -54,6 +54,8 @@ router.post('/add', async (req, res) => {
     title,
     movieId,
     userId: req.user._id,
+    description,
+    posterPath
   });
   newMovie.save()
     .then(movie => res.json(movie))

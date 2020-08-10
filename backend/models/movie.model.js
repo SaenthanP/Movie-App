@@ -18,6 +18,16 @@ const movieSchema=new Schema({
         required:true,
         trim:true,
     },
+    description:{
+        type:String,
+        required:true,
+        trim:true,
+    },
+    posterPath:{
+        type:String,
+        trim:true,
+
+    }
 
 });
 

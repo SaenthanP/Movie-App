@@ -34,7 +34,6 @@ export default function MovieModal(props) {
 
 
     }).then(res => {
-      console.log(res.data+"in useeffect")
       setFavouriteMovie(res.data);
     });
 
@@ -72,6 +71,8 @@ const addFavourite = async () => {
     data: {
       title: props.movie.title,
       movieId: props.movie.id,
+      description:props.movie.overview,
+      posterPath:props.movie.poster_path,
     }
 
 
@@ -131,7 +132,6 @@ const removeFavourite = async () => {
       <Modal.Footer>
         {handleFavourite()}
 
-      {console.log(isFavouriteMovieFound)}
         {/* <FavouriteButton movie={props.movie} isFound={isFavouriteFound} /> */}
 
         <Button onClick={props.onHide}>Close</Button>

@@ -93,8 +93,14 @@ img.moviePoster{
   }
   .favourite-table{
     margin-top: 1rem;
-    text-align: center;
 
+  }
+  th.favourite-table{
+          text-align: center;
+
+  }
+  .favourite-card{
+    background-color: antiquewhite;
   }
 @media(max-width:700px){
    
