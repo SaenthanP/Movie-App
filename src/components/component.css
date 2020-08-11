@@ -104,6 +104,21 @@ img.moviePoster{
     margin: 2rem 2rem 2rem 2rem;
     border-radius: 8px;
   }
+  .review-card{
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      border-radius: 8px;
+
+  }
+  .review-card:hover {
+
+
+    transition-timing-function: ease-out;
+  
+    transition: 0.25s;
+  
+      transform: scale(1.02) perspective(0.5px)
+    }
 @media(max-width:700px){
    
 

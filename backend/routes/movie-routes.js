@@ -97,18 +97,18 @@ router.get('/reviews', async (req, res) => {
 });
 
 router.post('/addReview', async (req, res) => {
-  let { username,movieId,review,date } = req.body;
+  let { movieId,review } = req.body;
 
 
   if (review.length<=0) {
     return res.status(400).json({ Error: "Empty review" });
   }
   const newReview = new Review({
-    username,
+    username:req.user.username,
     userId:req.user._id,
     movieId,
     review,
-    date,
+    date:Date.now(),
   });
   newReview.save()
     .then(review => res.json(review))
