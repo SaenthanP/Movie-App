@@ -1,7 +1,7 @@
 import React, { Component, useContext, useState, useEffect } from 'react';
 import '../components/component.css';
 
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button,Card } from 'react-bootstrap';
 import Axios from 'axios';
 export default function MovieModal(props) {
   const [isFavouriteMovieFound, setFavouriteMovie] = useState();
@@ -98,6 +98,21 @@ const removeFavourite = async () => {
     setFavouriteMovie(false);
   });
 }
+const reviews = (props) => ((
+  <Card className="review-card">
+      <Card.Body>
+      <div className="row">
+        <div className="col-sm-12">
+
+        </div>
+        <div className="col-sm-12">
+          
+        </div>
+      </div>
+      </Card.Body>
+  </Card>
+
+));
   return (
 
 
@@ -124,6 +139,12 @@ const removeFavourite = async () => {
             <p>
               {props.movie.overview}
             </p>
+          </div>
+
+        </div>
+        <div className="row">
+          <div className="col-sm-12">
+           
           </div>
 
         </div>

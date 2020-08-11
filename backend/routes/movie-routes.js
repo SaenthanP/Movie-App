@@ -1,6 +1,7 @@
 const router = require('express').Router();
 let User = require('../models/user.model');
 let Movie = require('../models/movie.model');
+let Review = require('../models/review.model');
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -8,7 +9,7 @@ const axios = require('axios');
 
 
 
-
+//Gets movies searched by user input
 router.post('/get_search', async (req, res) => {
   const searchItem = req.body.movieTitle;
   const apiRes = await axios.get('https://api.themoviedb.org/3/search/movie?api_key=' + process.env.MOVIE_API_KEY + '&query=' + searchItem)
@@ -19,6 +20,7 @@ router.post('/get_search', async (req, res) => {
 });
 
 
+//Gets most popular movies
 
 let cachedData;
 let cacheTime;
@@ -37,6 +39,7 @@ router.get('/get_popular_movies', async (req, res) => {
 
 });
 
+//handles favourite movies
 router.get('/favourites', async (req, res) => {
   const favourites = await Movie.find({ userId: req.user._id });
   return res.json(favourites);
@@ -85,6 +88,43 @@ router.post('/isFavouriteFound', async (req, res) => {
   return res.json(false);
 });
 
+//Handles reviews
+
+router.get('/reviews', async (req, res) => {
+  const reviews = await Review.find({});
+  return res.json(reviews);
+
+});
+
+router.post('/addReview', async (req, res) => {
+  let { username,movieId,review,date } = req.body;
+
+
+  if (review.length<=0) {
+    return res.status(400).json({ Error: "Empty review" });
+  }
+  const newReview = new Review({
+    username,
+    userId:req.user._id,
+    movieId,
+    review,
+    date,
+  });
+  newReview.save()
+    .then(review => res.json(review))
+    .catch(err => res.status(400).json({ Error: err }));
+});
+
+router.delete('/:id', async (req, res) => {
+  const reviewToDelete = await Review.findOne({ _id: req.params.id });
+
+  if (!reviewToDelete) {
+    return res.status(400).json({ Error: "review not found" });
+  }
+  const deletedReview = await Review.findByIdAndDelete(reviewToDelete._id);
+  const reviews = await Review.find({ userId: req.user._id });
+  return res.json(reviews);
+});
 
 router.post('/test', async (req, res) => {
   res.json(req.user._id);

@@ -101,6 +101,8 @@ img.moviePoster{
   }
   .favourite-card{
     background-color: antiquewhite;
+    margin: 2rem 2rem 2rem 2rem;
+    border-radius: 8px;
   }
 @media(max-width:700px){
    
