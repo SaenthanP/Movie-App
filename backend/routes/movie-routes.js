@@ -31,8 +31,7 @@ router.post('/get_search', async (req, res) => {
 
 //Gets most popular movies
 
-// let cachedData;
-// let cacheTime;
+
 router.post('/get_popular_movies', async (req, res) => {
   let {pageNumber}=req.body;
   // console.log(pageNumber);
@@ -45,6 +44,22 @@ router.post('/get_popular_movies', async (req, res) => {
 
   // cachedData = apiRes.data.results;
   // cacheTime = Date.now();
+
+  return res.json(apiRes.data.results);
+
+});
+let cachedData;
+let cacheTime;
+router.get('/get_now_playing', async (req, res) => {
+  var cacheTimeDifference = Date.now() - cacheTime;
+  if (cacheTime && cacheTimeDifference < 600000) {
+    return res.json(cachedData);
+  }
+  const apiRes = await axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=' + process.env.MOVIE_API_KEY + '&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&')
+    .then(res => { return res });
+
+  cachedData = apiRes.data.results;
+  cacheTime = Date.now();
 
   return res.json(apiRes.data.results);
 
@@ -108,6 +123,7 @@ router.get('/reviews', async (req, res) => {
 });
 
 router.post('/addReview', async (req, res) => {
+  
   let { movieId,review } = req.body;
 
 

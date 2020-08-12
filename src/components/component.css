@@ -1,12 +1,22 @@
+
+
 .container{
     background-color: aliceblue;
 }
 div.section1{
-    background-color: burlywood;
-
- 
+    background-color: rgb(230, 200, 162);
+  
 }
 
+.Typewriter {
+    text-align: center;
+    padding-top: 4rem;
+    color:white;
+    /* font-family:"sans-serif";
+    font-size: 40px; */
+    font-size: 2em;
+     font-weight: bolder;
+  }
 .center-block {
     padding-top: 2rem;
 
@@ -21,11 +31,19 @@ img.section-1-img{
     width: 50%;
 }
 div.section2{
-    background-color: red;
 }
 #credit-id{
     font-size: 12px;
 }
+.signin-card{
+    text-align: left;
+    margin:auto; 
+   width:30rem;
+   border: 0;
+   border-radius: .5rem;
+   box-shadow: 5px 6px 13px 0px rgba(0,0,0,0.75);
+   margin-top: 5rem;
+ }
 .title-header{
     padding-top: 4rem;
 color:#ffffff;
@@ -124,7 +142,10 @@ img.moviePoster{
     }
     .next-page-btn{
         float: right;
-        margin-right: 6.5rem;
+        margin-right:3rem;
+    }
+    .back-page-btn{
+        float: left;
     }
 @media(max-width:700px){
    

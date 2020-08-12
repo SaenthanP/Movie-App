@@ -25,9 +25,9 @@ export default function Login(props) {
 
 if(props.isAuthenticated===null){
     return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="nav-bar">
             
-            <Navbar.Brand href="/">Movie-Flix</Navbar.Brand>
+            <Navbar.Brand href="/"><img src={require('../Assets/db_logo.svg') }width="100px"></img></Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
 
@@ -43,7 +43,7 @@ if(props.isAuthenticated===null){
     );
 }else{
     return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="nav-bar">
             <Navbar.Brand href="/app">Movie-Flix</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">

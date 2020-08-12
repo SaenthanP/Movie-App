@@ -4,6 +4,7 @@ import '../App.css';
 
 import UserContext from "../context/user.context";
 import Axios from 'axios';
+import TypeWriterEffect from '../components/typewriter.component'
 // import User from '../'
 // import Error from './error.component';
 export default function HomePage() {
@@ -57,16 +58,26 @@ export default function HomePage() {
               </div>
               <div className="col-sm-12 col-md-6 title-col">
                   {/* <h1 className="title-header">Search millions of movies, <br/>and keep track of your favourites!</h1> */}
-                  <h1 className="title-header">Hey there! Login to search millions of movies and favourite the best ones!</h1>
+                  <TypeWriterEffect text="Hey there! Login to search millions of movies and favourite the best ones!"/>
 
                   </div>
           </div>
-      </div>
 
        <div className="section2">
-          <p>blah blah blah</p>
+    
       </div>
       </div>
+         <div className="row ">
+         <div className="col-sm-12 col-md-6 ">  
+         
+         </div>
+         <div className="col-sm-12 col-md-6 title-col">
+             {/* <h1 className="title-header">Search millions of movies, <br/>and keep track of your favourites!</h1> */}
+             <h1 className="title-header">Hey there! Login to search millions of movies and favourite the best ones!</h1>
 
+             </div>
+     </div>
+
+</div>
         );
 }

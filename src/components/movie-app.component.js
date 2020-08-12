@@ -66,6 +66,22 @@ export default function MovieApp() {
             setMovies(res.data);
         });
     }
+    const readNowPlayingMovies = async () => {
+        setSearchPage(false);
+        
+        await Axios({
+            method: 'get',
+            url: 'http://localhost:5000/api/protected/get_now_playing',
+            headers: {
+                'Authorization': localStorage.getItem('jwt'),
+            },
+            
+        }).then(res => {
+
+            setMovies(res.data);
+        });
+    }
+
 
     const onSubmit = async (e) => {
         setSearchPageNumber(1);
@@ -130,7 +146,8 @@ export default function MovieApp() {
     const nextPage = () => {
         console.log("pageNumber: " + popularPageNumber);
         if (!isSearchPage) {
-            setPopularPageNumber(popularPageNumber + 1);
+        console.log(popularPageNumber);
+                        setPopularPageNumber(popularPageNumber + 1);
         } else {
             setSearchPageNumber(searchPageNumber + 1);
             searchMovie();
@@ -140,6 +157,8 @@ export default function MovieApp() {
     const previousPage = () => {
         console.log("search: " + popularPageNumber);
         if (!isSearchPage) {
+            console.log(popularPageNumber);
+
             setPopularPageNumber(popularPageNumber - 1);
         } else {
             setSearchPageNumber(searchPageNumber - 1);
@@ -186,6 +205,7 @@ export default function MovieApp() {
 
                             >
                                 <Dropdown.Item eventKey="1" onClick={() => readPopularMovies()}>Get Most Popular</Dropdown.Item>
+                                {/* <Dropdown.Item eventKey="2" onClick={() => readNowPlayingMovies()}>Get Now Playing in Theatres</Dropdown.Item> */}
 
                             </DropdownType>
                         ))}
@@ -196,7 +216,7 @@ export default function MovieApp() {
                     {movies.map(currentMovie => <Movies movie={currentMovie} key={currentMovie.id} />)}
                     <div className="row">
                         <div className="col-sm-6">
-                            <button onClick={() => previousPage()} disabled={popularPageNumber <= 1||searchPageNumber<=1}>Back</button>
+                            <button className="back-page-btn" onClick={() => previousPage()} disabled={popularPageNumber <= 1||searchPageNumber<=1&&isSearchPage}>Back</button>
                         </div>
                         <div className="col-sm-6">
                             <button type="button" className="next-page-btn" onClick={() => nextPage(1)} disabled={movies.length < 20}>Foward</button>

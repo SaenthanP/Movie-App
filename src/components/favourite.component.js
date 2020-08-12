@@ -7,7 +7,23 @@ export default function FavouritePage(props) {
     const [favouriteMovies, setFavouriteMovies] = useState([]);
 
     useEffect(() => {
+        const checkLoggedIn = async () => {
+            if (localStorage.getItem('jwt')) {
 
+                Axios({
+                    method: 'get',
+                    url: 'http://localhost:5000/api/users/isAuthenticated',
+                    headers: {
+                        'Authorization': localStorage.getItem('jwt'),
+                    }
+                }).catch(err => {
+                    window.location = '/';
+                    localStorage.removeItem('jwt');
+                });
+            }
+
+        }
+        checkLoggedIn();
 
         readFavouriteMovies();
 
