@@ -9,10 +9,19 @@ const axios = require('axios');
 
 
 
+router.get('/getUserId', async (req, res) => {
+  
+  return res.json(req.user._id);
+
+});
+
+
+
 //Gets movies searched by user input
 router.post('/get_search', async (req, res) => {
   const searchItem = req.body.movieTitle;
-  const apiRes = await axios.get('https://api.themoviedb.org/3/search/movie?api_key=' + process.env.MOVIE_API_KEY + '&query=' + searchItem)
+  const searchPageNumber=req.body.searchPageNumber;
+  const apiRes = await axios.get('https://api.themoviedb.org/3/search/movie?api_key=' + process.env.MOVIE_API_KEY + '&query=' + searchItem+'&page='+searchPageNumber)
     .then(res => { return res });
 
   return res.json(apiRes.data.results);
@@ -22,18 +31,20 @@ router.post('/get_search', async (req, res) => {
 
 //Gets most popular movies
 
-let cachedData;
-let cacheTime;
-router.get('/get_popular_movies', async (req, res) => {
-  var cacheTimeDifference = Date.now() - cacheTime;
-  if (cacheTime && cacheTimeDifference < 600000) {
-    return res.json(cachedData);
-  }
-  const apiRes = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=' + process.env.MOVIE_API_KEY + '&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false')
+// let cachedData;
+// let cacheTime;
+router.post('/get_popular_movies', async (req, res) => {
+  let {pageNumber}=req.body;
+  // console.log(pageNumber);
+  // var cacheTimeDifference = Date.now() - cacheTime;
+  // if (cacheTime && cacheTimeDifference < 600000) {
+  //   return res.json(cachedData);
+  // }
+  const apiRes = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=' + process.env.MOVIE_API_KEY + '&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page='+pageNumber)
     .then(res => { return res });
 
-  cachedData = apiRes.data.results;
-  cacheTime = Date.now();
+  // cachedData = apiRes.data.results;
+  // cacheTime = Date.now();
 
   return res.json(apiRes.data.results);
 
@@ -103,6 +114,7 @@ router.post('/addReview', async (req, res) => {
   if (review.length<=0) {
     return res.status(400).json({ Error: "Empty review" });
   }
+
   const newReview = new Review({
     username:req.user.username,
     userId:req.user._id,
@@ -115,14 +127,14 @@ router.post('/addReview', async (req, res) => {
     .catch(err => res.status(400).json({ Error: err }));
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/delete_review/:id', async (req, res) => {
   const reviewToDelete = await Review.findOne({ _id: req.params.id });
 
   if (!reviewToDelete) {
     return res.status(400).json({ Error: "review not found" });
   }
   const deletedReview = await Review.findByIdAndDelete(reviewToDelete._id);
-  const reviews = await Review.find({ userId: req.user._id });
+  const reviews = await Review.find({ });
   return res.json(reviews);
 });
 

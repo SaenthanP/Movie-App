@@ -5,6 +5,7 @@
 .container-fluid{
  
  padding: 0;
+ text-align: center;
 }
 .App-logo {
   height: 40vmin;

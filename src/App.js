@@ -23,6 +23,7 @@ function App() {
 
   useEffect(()=>{
     setLoggedIn(localStorage.getItem('jwt'));
+    
   },[]);
  
   return (

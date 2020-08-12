@@ -7,6 +7,7 @@ export default function MovieModal(props) {
   const [isFavouriteMovieFound, setFavouriteMovie] = useState();
   const [reviews, setReviews] = useState([]);
   const [userReview, setUserReview] = useState("");
+  const [userId,setUserId]=useState();
 
   useEffect(() => {
     const ac = new AbortController();
@@ -56,8 +57,10 @@ export default function MovieModal(props) {
   
   
       }).then(res => {
-    
-        setReviews(res.data);
+    var temporaryReviewsArray=[];
+    temporaryReviewsArray=res.data;
+
+        setReviews(temporaryReviewsArray.reverse());
       });
   
   
@@ -66,28 +69,50 @@ export default function MovieModal(props) {
 
 getReviews();
 
+const getUserId = async () => {
+  await Axios({
+    method: 'get',
+    url: 'http://localhost:5000/api/protected/getUserId',
+    headers: {
+      'Authorization': localStorage.getItem('jwt'),
+
+
+    }
+
+
+  }).then(res => {
+
+    setUserId(res.data);
+  });
+
+
+}
+
+
+getUserId();
+
 return () => ac.abort();
 
   },[]);
   
-  const getReviews = async () => {
-    await Axios({
-      method: 'get',
-      url: 'http://localhost:5000/api/protected/reviews',
-      headers: {
-        'Authorization': localStorage.getItem('jwt'),
+  // const getReviews = async () => {
+  //   await Axios({
+  //     method: 'get',
+  //     url: 'http://localhost:5000/api/protected/reviews',
+  //     headers: {
+  //       'Authorization': localStorage.getItem('jwt'),
 
 
-      }
+  //     }
 
 
-    }).then(res => {
+  //   }).then(res => {
   
-      setReviews(res.data);
-    });
+  //     setReviews(res.data);
+  //   });
 
 
-  }
+  // }
   const handleFavourite = () => {
    
     
@@ -148,23 +173,49 @@ return () => ac.abort();
       setFavouriteMovie(false);
     });
   }
+  const deleteReview=async(id)=>{
+    await Axios({
+      method: 'delete',
+      url: 'http://localhost:5000/api/protected/delete_review/' + id,
+      headers: {
+        'Authorization': localStorage.getItem('jwt'),
+
+
+      },
+
+
+
+    }).then(res => {
+      var temporaryReviewsArray=[];
+      temporaryReviewsArray=res.data;
+  
+          setReviews(temporaryReviewsArray.reverse());
+    });
+  }
   const Reviews = (props) => {
+    let isUsersReview=false;
     if (props.review.movieId == props.movie.id) {
+      if(props.review.userId==userId){
+        isUsersReview=true;
+      }
       return (
       <Card key={props.review.key} className="review-card">
         <Card.Body>
           <div className="row">
 
             <div className="col-sm-12">
-              <h6>{props.review.username}</h6>
+              <h6>{props.review.username} {props.review.date}</h6>
             </div>
           </div>
           <div className="row">
 
             <div className="col-sm-12">
               <p>{props.review.review}</p>
+
             </div>
           </div>
+          {isUsersReview&&<Button variant="outline-dark" className="review-delete-button" onClick={()=>deleteReview(props.review._id)}>Delete</Button>}
+
         </Card.Body>
       </Card>);
     } else {
@@ -204,7 +255,7 @@ const onSubmit = async (e) => {
   
   
             }).then(res => {
-              setReviews([...reviews, res.data]);
+              setReviews([ res.data,...reviews]);
               setUserReview("");
             });
   
@@ -251,7 +302,7 @@ const onSubmit = async (e) => {
           <Form.Control as="textarea" rows="2" placeholder="Add a review" onChange={(e)=>setUserReview(e.target.value)}/>
           </div>
         
-          <button className="btn btn-lg btn-primary btn-block text-uppercase review-btn" type="submit" disabled={userReview<1}>Post</button>
+          <button className="btn btn-lg btn-primary btn-block text-uppercase review-btn" type="submit" disabled={userReview<=0}>Post</button>
 
         </form>
         {/* {reviewCountUpdate()} */}

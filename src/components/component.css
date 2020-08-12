@@ -119,6 +119,13 @@ img.moviePoster{
   
       transform: scale(1.02) perspective(0.5px)
     }
+    .review-delete-button{
+        float: right;
+    }
+    .next-page-btn{
+        float: right;
+        margin-right: 6.5rem;
+    }
 @media(max-width:700px){
    
 

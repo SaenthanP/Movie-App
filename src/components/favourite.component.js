@@ -62,7 +62,7 @@ export default function FavouritePage(props) {
                         <p>{props.movie.description}</p>
                     </div>
                     <div className="col-sm-2">
-                        <button onClick={()=>{removeFavourite(props.movie.movieId)}}>Remove</button>
+                    <Button  onClick={()=>{removeFavourite(props.movie.movieId)}} variant="outline-dark">Remove</Button>
                     </div>
                 </div>
             </Card.Body>

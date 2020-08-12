@@ -6,7 +6,8 @@ import '../components/component.css';
 import test from '../Assets/no_poster.jpg'
 import { Redirect } from 'react-router-dom';
 // import jwt from 'jsonwebtoken';
-import { Button, Card, CardColumns, CardGroup, CardDeck, Dropdown, ButtonGroup, SplitButton, DropdownButton,Modal } from 'react-bootstrap';
+import { Button, Card, CardColumns, CardGroup, CardDeck, Dropdown, ButtonGroup, SplitButton, DropdownButton, Modal } from 'react-bootstrap';
+import FavouritePage from './favourite.component';
 require('dotenv').config();
 
 
@@ -14,11 +15,11 @@ export default function MovieApp() {
     const [movies, setMovies] = useState([]);
     const [movieTitle, setMovieTitle] = useState();
     const [selectedMovie, setSelectedMovie] = useState([]);
-
     const [error, setError] = useState(undefined);
-
+    const [isSearchPage, setSearchPage] = useState(false);
     const [modalShow, setModalShow] = useState(false);
-
+    const [popularPageNumber, setPopularPageNumber] = useState(1);
+    const [searchPageNumber, setSearchPageNumber] = useState(1);
 
     useEffect(() => {
 
@@ -44,17 +45,21 @@ export default function MovieApp() {
 
 
 
-   
-        
-        readPopularMovies();
-    }, []);
+        readPopularMovies(popularPageNumber);
+    }, [popularPageNumber]);
 
-    const readPopularMovies = async () => {
+    const readPopularMovies = async (popularPageNumber) => {
+        setSearchPage(false);
+        
+        console.log(popularPageNumber);
         await Axios({
-            method: 'get',
+            method: 'post',
             url: 'http://localhost:5000/api/protected/get_popular_movies',
             headers: {
                 'Authorization': localStorage.getItem('jwt'),
+            },
+            data: {
+                pageNumber: popularPageNumber
             }
         }).then(res => {
 
@@ -63,73 +68,96 @@ export default function MovieApp() {
     }
 
     const onSubmit = async (e) => {
-
+        setSearchPageNumber(1);
+        setSearchPage(true);
         try {
             e.preventDefault();
             e.target.reset();
             console.log(movieTitle);
-            const searchMovie = async () => {
-                await Axios({
-                    method: 'post',
-                    url: 'http://localhost:5000/api/protected/get_search',
-                    headers: {
-                        'Authorization': localStorage.getItem('jwt'),
 
-
-                    },
-                    data: {
-                        movieTitle
-                    }
-
-
-                }).then(res => {
-                    // res.data.map(currentMovie => {
-
-                    // });
-
-                    console.log(res.data);
-                    setMovies(res.data);
-                });
-
-            }
             searchMovie();
         } catch (err) {
             // err.response.data.Error && setError(err.response.data.Error);
 
         }
     }
-    const imageClick = async(movie) => {
+    const searchMovie = async () => {
+        console.log("movie title" + movieTitle);
+        await Axios({
+            method: 'post',
+            url: 'http://localhost:5000/api/protected/get_search',
+            headers: {
+                'Authorization': localStorage.getItem('jwt'),
 
-       
+
+            },
+            data: {
+                movieTitle,
+                searchPageNumber
+            }
+
+
+        }).then(res => {
+            // res.data.map(currentMovie => {
+
+            // });
+
+            console.log(res.data);
+            setMovies(res.data);
+        });
+
+    }
+    const imageClick = async (movie) => {
+
+
         console.log(movie);
         setSelectedMovie(movie);
-     
+
         // console.log(selectedMovie);
         // console.log(selectedMovie.title)
-         setModalShow(true);
+        setModalShow(true);
 
 
     }
 
     const Movies = (props) => ((
 
-<>
-        <button type="button" className="movie-poster-button" onClick={() => imageClick(props.movie)}><img className="moviePoster movie-card" key={props.movie.key} src={props.movie.poster_path ? "https://image.tmdb.org/t/p/original" + props.movie.poster_path : require("../Assets/no_poster.jpg")} width="200px" height="300px"  ></img></button>  
-      </>
+        <>
+            <button type="button" className="movie-poster-button" onClick={() => imageClick(props.movie)}><img className="moviePoster movie-card" key={props.movie.key} src={props.movie.poster_path ? "https://image.tmdb.org/t/p/original" + props.movie.poster_path : require("../Assets/no_poster.jpg")} width="200px" height="300px"  ></img></button>
+        </>
     ));
-   
-    
+
+    const nextPage = () => {
+        console.log("pageNumber: " + popularPageNumber);
+        if (!isSearchPage) {
+            setPopularPageNumber(popularPageNumber + 1);
+        } else {
+            setSearchPageNumber(searchPageNumber + 1);
+            searchMovie();
+        }
+        // readPopularMovies();
+    }
+    const previousPage = () => {
+        console.log("search: " + popularPageNumber);
+        if (!isSearchPage) {
+            setPopularPageNumber(popularPageNumber - 1);
+        } else {
+            setSearchPageNumber(searchPageNumber - 1);
+            searchMovie();
+        }
+        // readPopularMovies();
+    }
     return (
-        
+
         <div className="container-fluid movie-page">
             <MovieModal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-       movie={selectedMovie}
-       
-      />
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                movie={selectedMovie}
+
+            />
             <form onSubmit={onSubmit} className="form-add-task">
-         
+
                 <div className="row">
                     <div className="col-sm-8 d-flex">
                         <div className="form-group">
@@ -139,34 +167,41 @@ export default function MovieApp() {
                     </div>
                     <div className="col-sm-4  d-flex">
                         <Button className="text-uppercase search-btn" variant="dark" type="submit">Search</Button>
-                        
+
 
                     </div>
                 </div>
                 <div className="row">
-                <div className="col-sm-12 d-flex">
+                    <div className="col-sm-12 d-flex">
 
-                            {[DropdownButton].map((DropdownType, idx) => (
-                                <DropdownType
-                                    as={ButtonGroup}
-                                    key={idx}
-                                    id={`dropdown-button-drop-${idx}`}
-                                    size="sm"
-                                    variant="secondary"
-                                    title="Sort by..."
-                                    className="sort-drop-down"
+                        {[DropdownButton].map((DropdownType, idx) => (
+                            <DropdownType
+                                as={ButtonGroup}
+                                key={idx}
+                                id={`dropdown-button-drop-${idx}`}
+                                size="sm"
+                                variant="secondary"
+                                title="Sort by..."
+                                className="sort-drop-down"
 
-                                >
-                                    <Dropdown.Item eventKey="1" onClick={()=>readPopularMovies()}>Get Most Popular</Dropdown.Item>
-                                  
-                                </DropdownType>
-                            ))}
-                            </div>
-                        </div>
+                            >
+                                <Dropdown.Item eventKey="1" onClick={() => readPopularMovies()}>Get Most Popular</Dropdown.Item>
+
+                            </DropdownType>
+                        ))}
+                    </div>
+                </div>
                 <div className="container card-container">
 
                     {movies.map(currentMovie => <Movies movie={currentMovie} key={currentMovie.id} />)}
-
+                    <div className="row">
+                        <div className="col-sm-6">
+                            <button onClick={() => previousPage()} disabled={popularPageNumber <= 1||searchPageNumber<=1}>Back</button>
+                        </div>
+                        <div className="col-sm-6">
+                            <button type="button" className="next-page-btn" onClick={() => nextPage(1)} disabled={movies.length < 20}>Foward</button>
+                        </div>
+                    </div>
 
 
 
