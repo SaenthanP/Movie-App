@@ -20,8 +20,8 @@ router.get('/getUserId', async (req, res) => {
 //Gets movies searched by user input
 router.post('/get_search', async (req, res) => {
   const searchItem = req.body.movieTitle;
-  const searchPageNumber=req.body.searchPageNumber;
-  const apiRes = await axios.get('https://api.themoviedb.org/3/search/movie?api_key=' + process.env.MOVIE_API_KEY + '&query=' + searchItem+'&page='+searchPageNumber)
+  const pageNumber=req.body.pageNumber;
+  const apiRes = await axios.get('https://api.themoviedb.org/3/search/movie?api_key=' + process.env.MOVIE_API_KEY + '&query=' + searchItem+'&page='+pageNumber)
     .then(res => { return res });
 
   return res.json(apiRes.data.results);

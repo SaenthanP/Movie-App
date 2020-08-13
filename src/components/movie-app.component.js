@@ -16,11 +16,14 @@ export default function MovieApp() {
     const [movieTitle, setMovieTitle] = useState();
     const [selectedMovie, setSelectedMovie] = useState([]);
     const [error, setError] = useState(undefined);
-    const [isSearchPage, setSearchPage] = useState(false);
     const [modalShow, setModalShow] = useState(false);
-    const [popularPageNumber, setPopularPageNumber] = useState(1);
-    const [searchPageNumber, setSearchPageNumber] = useState(1);
-
+    const [pageNumber, setPageNumber] = useState(1);
+    /*
+    "POPULAR"-popular movies
+    "SEARCH"-searched movies by user
+    "IN_THEATRES"-movies currently in theatre
+    */
+    const [movieApiSource, setMovieApiSource] = useState("POPULAR");
     useEffect(() => {
 
         const checkLoggedIn = async () => {
@@ -42,16 +45,22 @@ export default function MovieApp() {
         checkLoggedIn();
 
 
+        switch (movieApiSource) {
+            case 'POPULAR':
+                 readPopularMovies(pageNumber);
+
+                break;
+            case 'SEARCH':
+                searchMovie(pageNumber);
+                break;
 
 
+        }
+    }, [pageNumber]);
 
-        readPopularMovies(popularPageNumber);
-    }, [popularPageNumber]);
-
-    const readPopularMovies = async (popularPageNumber) => {
-        setSearchPage(false);
-        
-        console.log(popularPageNumber);
+    const readPopularMovies = async (pageNumber) => {
+        setMovieApiSource("POPULAR");
+        setPageNumber(pageNumber);
         await Axios({
             method: 'post',
             url: 'http://localhost:5000/api/protected/get_popular_movies',
@@ -59,7 +68,7 @@ export default function MovieApp() {
                 'Authorization': localStorage.getItem('jwt'),
             },
             data: {
-                pageNumber: popularPageNumber
+                pageNumber
             }
         }).then(res => {
 
@@ -67,15 +76,13 @@ export default function MovieApp() {
         });
     }
     const readNowPlayingMovies = async () => {
-        setSearchPage(false);
-        
         await Axios({
             method: 'get',
             url: 'http://localhost:5000/api/protected/get_now_playing',
             headers: {
                 'Authorization': localStorage.getItem('jwt'),
             },
-            
+
         }).then(res => {
 
             setMovies(res.data);
@@ -84,21 +91,23 @@ export default function MovieApp() {
 
 
     const onSubmit = async (e) => {
-        setSearchPageNumber(1);
-        setSearchPage(true);
+        setMovieApiSource("SEARCH");
+
+        setPageNumber(1);
+
         try {
             e.preventDefault();
             e.target.reset();
-            console.log(movieTitle);
 
             searchMovie();
+
         } catch (err) {
             // err.response.data.Error && setError(err.response.data.Error);
 
         }
     }
-    const searchMovie = async () => {
-        console.log("movie title" + movieTitle);
+    const searchMovie = async (pageNumber) => {
+
         await Axios({
             method: 'post',
             url: 'http://localhost:5000/api/protected/get_search',
@@ -109,31 +118,20 @@ export default function MovieApp() {
             },
             data: {
                 movieTitle,
-                searchPageNumber
+                pageNumber
             }
 
 
         }).then(res => {
-            // res.data.map(currentMovie => {
-
-            // });
-
+ 
             console.log(res.data);
             setMovies(res.data);
         });
 
     }
     const imageClick = async (movie) => {
-
-
-        console.log(movie);
         setSelectedMovie(movie);
-
-        // console.log(selectedMovie);
-        // console.log(selectedMovie.title)
         setModalShow(true);
-
-
     }
 
     const Movies = (props) => ((
@@ -143,28 +141,11 @@ export default function MovieApp() {
         </>
     ));
 
-    const nextPage = () => {
-        console.log("pageNumber: " + popularPageNumber);
-        if (!isSearchPage) {
-        console.log(popularPageNumber);
-                        setPopularPageNumber(popularPageNumber + 1);
-        } else {
-            setSearchPageNumber(searchPageNumber + 1);
-            searchMovie();
-        }
-        // readPopularMovies();
+    const nextPage = async() => {
+        setPageNumber(pageNumber+1);
     }
-    const previousPage = () => {
-        console.log("search: " + popularPageNumber);
-        if (!isSearchPage) {
-            console.log(popularPageNumber);
-
-            setPopularPageNumber(popularPageNumber - 1);
-        } else {
-            setSearchPageNumber(searchPageNumber - 1);
-            searchMovie();
-        }
-        // readPopularMovies();
+    const previousPage = async() => {
+       setPageNumber(pageNumber-1);
     }
     return (
 
@@ -204,7 +185,7 @@ export default function MovieApp() {
                                 className="sort-drop-down"
 
                             >
-                                <Dropdown.Item eventKey="1" onClick={() => readPopularMovies()}>Get Most Popular</Dropdown.Item>
+                                <Dropdown.Item eventKey="1" onClick={() => readPopularMovies(1)}>Get Most Popular</Dropdown.Item>
                                 {/* <Dropdown.Item eventKey="2" onClick={() => readNowPlayingMovies()}>Get Now Playing in Theatres</Dropdown.Item> */}
 
                             </DropdownType>
@@ -216,10 +197,10 @@ export default function MovieApp() {
                     {movies.map(currentMovie => <Movies movie={currentMovie} key={currentMovie.id} />)}
                     <div className="row">
                         <div className="col-sm-6">
-                            <button className="back-page-btn" onClick={() => previousPage()} disabled={popularPageNumber <= 1||searchPageNumber<=1&&isSearchPage}>Back</button>
+                            <button className="back-page-btn" onClick={() => previousPage()} disabled={pageNumber <= 1 }>Back</button>
                         </div>
                         <div className="col-sm-6">
-                            <button type="button" className="next-page-btn" onClick={() => nextPage(1)} disabled={movies.length < 20}>Foward</button>
+                            <button type="button" className="next-page-btn" onClick={() => nextPage()} disabled={movies.length < 20}>Foward</button>
                         </div>
                     </div>
 

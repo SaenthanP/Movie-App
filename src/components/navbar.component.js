@@ -23,42 +23,24 @@ export default function Login(props) {
     
     };
 
-if(props.isAuthenticated===null){
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="nav-bar">
             
-            <Navbar.Brand href="/"><img src={require('../Assets/db_logo.svg') }width="100px"></img></Navbar.Brand>
+            <Navbar.Brand href={props.isAuthenticated? "/app":"/"}><img src={require('../Assets/db_logo.svg') }width="100px"></img></Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
 
                 <Nav className="mr-auto">
-                    <Link to="/login" className="nav-link">Sign in</Link>
-                    <Link to="/register" className="nav-link">Register</Link>
-
+                   {!props.isAuthenticated&& <Link to="/login" className="nav-link">Sign in</Link>}
+                   {!props.isAuthenticated&&<Link to="/register" className="nav-link">Register</Link>}
+                  {props.isAuthenticated&& <Link to="/favourites" className="nav-link">Favourites</Link>}
+                    {props.isAuthenticated&& <Link to="/" className="nav-link" onClick={logout}>Sign Out</Link>}
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
 
 
     );
-}else{
-    return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="nav-bar">
-            <Navbar.Brand href="/app">Movie-Flix</Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav">
 
-                <Nav className="mr-auto">
-                        <Link to="/favourites" className="nav-link">Favourites</Link>
-
-                    <Link to="/" className="nav-link" onClick={logout}>Sign Out</Link>
-
-                </Nav>
-            </Navbar.Collapse>
-        </Navbar>
-
-
-    );
-}
    
 }
