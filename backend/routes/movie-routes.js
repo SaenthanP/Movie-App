@@ -48,22 +48,18 @@ router.post('/get_popular_movies', async (req, res) => {
   return res.json(apiRes.data.results);
 
 });
-let cachedData;
-let cacheTime;
-router.get('/get_now_playing', async (req, res) => {
-  var cacheTimeDifference = Date.now() - cacheTime;
-  if (cacheTime && cacheTimeDifference < 600000) {
-    return res.json(cachedData);
-  }
-  const apiRes = await axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=' + process.env.MOVIE_API_KEY + '&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&')
-    .then(res => { return res });
 
-  cachedData = apiRes.data.results;
-  cacheTime = Date.now();
-
+router.post('/get_now_playing', async (req, res) => {
+  let {pageNumber}=req.body;
+  const apiRes = await axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=' + process.env.MOVIE_API_KEY + '&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page='+pageNumber)
   return res.json(apiRes.data.results);
-
 });
+router.post('/get_upcoming', async (req, res) => {
+  let {pageNumber}=req.body;
+  const apiRes = await axios.get('https://api.themoviedb.org/3/movie/upcoming?api_key=' + process.env.MOVIE_API_KEY + '&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page='+pageNumber)
+  return res.json(apiRes.data.results);
+});
+
 
 //handles favourite movies
 router.get('/favourites', async (req, res) => {
@@ -130,13 +126,15 @@ router.post('/addReview', async (req, res) => {
   if (review.length<=0) {
     return res.status(400).json({ Error: "Empty review" });
   }
+let date=new Date().toJSON().slice(0,10);
+
 
   const newReview = new Review({
     username:req.user.username,
     userId:req.user._id,
     movieId,
     review,
-    date:Date.now(),
+    date
   });
   newReview.save()
     .then(review => res.json(review))
