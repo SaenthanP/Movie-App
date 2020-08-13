@@ -4,12 +4,15 @@ import '../App.css';
 import UserContext from "../context/user.context";
 import Axios from 'axios';
 import User from '../'
+import ErrorModal from '../components/error-modal.component';
+
 // import Error from './error.component';
 export default function Login() {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [error, setError] = useState();
     const { setUserData } = useContext(UserContext);
+    const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
         const checkLoggedIn= async()=>{
@@ -50,17 +53,15 @@ export default function Login() {
            
             localStorage.setItem('jwt',loginRes.data.token);
            console.log(loginRes.data.payload);
-          
-            //  Axios.get("http://localhost:5000/app",{ headers: { "Authorization": localStorage.getItem('jwt') } });
-            // setUserData({
-            //     token: loginRes.data.token,
-            //     user: loginRes.data.user,
-            // });
+        
             console.log(loginRes.data.token);
             window.location = '/app';
         } catch (err) {
-            console.log(err)
-            // err.response.data.Error && setError(err.response.data.Error);
+            setError(err.response.data.Error);
+
+            console.log(err);
+            setModalShow(true);
+            console.log(err.response.data.Error+" test");
         }
     }
 
@@ -72,6 +73,12 @@ export default function Login() {
 
                 <div className="card signin-card">
                     <div className="card-body">
+                    <ErrorModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                error={error}
+
+            />
                         {/* {error && (<Error message={error} show={true} clearError={() => setError(undefined)} />)} */}
 
                         <h5 className="card-title text-center">Sign In</h5>

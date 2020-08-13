@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import '../App.css';
 import UserContext from "../context/user.context";
 import Axios from 'axios';
+import ErrorModal from '../components/error-modal.component';
 
 export default function Register() {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [confirmPassword, setConfirmPassword] = useState();
     const [error, setError] = useState();
+    const [modalShow, setModalShow] = useState(false);
 
     const { setUserData } = useContext(UserContext);
 
@@ -55,6 +57,11 @@ export default function Register() {
 
 
         } catch (err) {
+            console.log(err.response.data.Error);
+
+            setError(err.response.data.Error);
+
+            setModalShow(true);
             // err.response.data.Error && setError(err.response.data.Error);
         }
     }
@@ -65,6 +72,12 @@ export default function Register() {
             <div className="col-sm-12 d-flex">
                 <div className="card signin-card">
                     <div className="card-body">
+                    <ErrorModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                error={error}
+
+            />
                         {/* {error && (<Error message={error} clearError={()=>setError(undefined)}/>)} */}
 
                         <h5 className="card-title text-center">Register</h5>

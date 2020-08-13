@@ -65,6 +65,7 @@ export default function FavouritePage(props) {
     const Movie = (props) => ((
         <Card className="favourite-card">
             <Card.Body>
+
                 <div className="row">
                     <div className="col-sm-3">
                         <img className="moviePoster movie-card" key={props.movie.key} src={props.movie.posterPath ? "https://image.tmdb.org/t/p/original" + props.movie.posterPath : require("../Assets/no_poster.jpg")} width="210px" height="310px"  ></img>
@@ -84,16 +85,7 @@ export default function FavouritePage(props) {
             </Card.Body>
         </Card>
 
-        // <tbody>
-        //     <tr>
-
-        //         <td key={props.movie._id}>{props.movie.title}</td>
-        //         <td>{props.movie.description}</td>
-
-        //         <td  >{<button type="button" className="delete-btn" > Click to Complete!</button>}</td>
-        //     </tr>
-
-        // </tbody>
+    
     ));
 
     return (
@@ -101,20 +93,9 @@ export default function FavouritePage(props) {
 
             <div className="container-fluid favourite">
                 {favouriteMovies.map(currentMovie => <Movie movie={currentMovie} key={currentMovie._id} />)}
-                {/* 
-    <Table className="favourite-table" striped bordered hover variant="dark" >
-        <thead>
-            <tr>
-                <th>Movie</th>
-                <th>Description</th>
-                <th>Remove</th>
+                {favouriteMovies.length<=0&&<h4>There are no favourites...Please go back and favourite the best ones</h4>}
 
-            </tr>
-        </thead>
-
-
-
-    </Table> */}
+            
             </div>
         </div>
     );

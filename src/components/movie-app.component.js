@@ -13,7 +13,7 @@ require('dotenv').config();
 
 export default function MovieApp() {
     const [movies, setMovies] = useState([]);
-    const [movieTitle, setMovieTitle] = useState();
+    const [movieTitle, setMovieTitle] = useState("");
     const [selectedMovie, setSelectedMovie] = useState([]);
     const [error, setError] = useState(undefined);
     const [modalShow, setModalShow] = useState(false);
@@ -125,7 +125,9 @@ export default function MovieApp() {
         }).then(res => {
  
             console.log(res.data);
+            
             setMovies(res.data);
+            setMovieTitle("");
         });
 
     }
@@ -156,6 +158,7 @@ export default function MovieApp() {
                 movie={selectedMovie}
 
             />
+
             <form onSubmit={onSubmit} className="form-add-task">
 
                 <div className="row">
@@ -166,7 +169,7 @@ export default function MovieApp() {
 
                     </div>
                     <div className="col-sm-4  d-flex">
-                        <Button className="text-uppercase search-btn" variant="dark" type="submit">Search</Button>
+                        <Button className="text-uppercase search-btn" variant="dark" type="submit" disabled={movieTitle<=0}>Search</Button>
 
 
                     </div>
@@ -192,9 +195,12 @@ export default function MovieApp() {
                         ))}
                     </div>
                 </div>
+
                 <div className="container card-container">
 
                     {movies.map(currentMovie => <Movies movie={currentMovie} key={currentMovie.id} />)}
+                    { movies.length<=0&&<h4>No movies are found</h4>}
+
                     <div className="row">
                         <div className="col-sm-6">
                             <button className="back-page-btn" onClick={() => previousPage()} disabled={pageNumber <= 1 }>Back</button>

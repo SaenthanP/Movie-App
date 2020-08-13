@@ -10,10 +10,10 @@ router.post('/register', async (req, res) => {
         if (!username || !password || !confirmPassword) {
             return res.status(400).json({ Error: "Not all fields entered" });
         }
-        if (username < 3) {
+        if (username.length < 3) {
             return res.status(400).json({ Error: "Username is not atleast 3 characters long" });
         }
-        if (password < 8) {
+        if (password.length < 8) {
             return res.status(400).json({ Error: "Password is not atleast 8 characters long" });
         }
         if (password !== confirmPassword) {
