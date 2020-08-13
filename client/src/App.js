@@ -3,7 +3,6 @@ import React,{useState, useEffect} from 'react';
 import { BrowserRouter as Router, Route ,Switch,Redirect} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-// import Axios from 'axios';
 import './App.css';
 import Login from "./components/login.component";
 import UserContext from "./context/user.context";
@@ -41,6 +40,7 @@ function App() {
 
           <Route path="/app" exact component={MovieApp}/>
           <Route path="/favourites" exact component={FavouritePage}/>
+          <Redirect to="/app" exact component={MovieApp}/>
 
           </Switch>
         </div>

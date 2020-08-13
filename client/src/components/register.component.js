@@ -1,7 +1,6 @@
-import React, { useContext, useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../App.css';
-import UserContext from "../context/user.context";
 import Axios from 'axios';
 import ErrorModal from '../components/error-modal.component';
 
@@ -12,32 +11,28 @@ export default function Register() {
     const [error, setError] = useState();
     const [modalShow, setModalShow] = useState(false);
 
-    const { setUserData } = useContext(UserContext);
 
     useEffect(() => {
-        const checkLoggedIn= async()=>{
-            if(localStorage.getItem('jwt')){
+        const checkLoggedIn = async () => {
+            if (localStorage.getItem('jwt')) {
 
-            Axios({
-                method: 'get',
-                url: 'http://localhost:5000/api/users/isAuthenticated',
-                headers: {
-                    'Authorization': localStorage.getItem('jwt'),
-                }
-            }).then(res=>{
-                window.location = '/app';
+                Axios({
+                    method: 'get',
+                    url: 'http://localhost:5000/api/users/isAuthenticated',
+                    headers: {
+                        'Authorization': localStorage.getItem('jwt'),
+                    }
+                }).then(res => {
+                    window.location = '/app';
 
-            }).catch(err=>{
-                localStorage.removeItem('jwt');
+                }).catch(err => {
+                    localStorage.removeItem('jwt');
 
-                window.location = '/register';
-            });
-        }
+                    window.location = '/register';
+                });
+            }
         }
         checkLoggedIn();
-        // if(localStorage.getItem('jwt')){
-        //     window.location='/app';
-        // }
 
     }, []);
 
@@ -51,18 +46,15 @@ export default function Register() {
                 password,
                 confirmPassword
             }
-            const registrationRes = await Axios.post("http://localhost:5000/api/users/register", registerUser);
 
+            await Axios.post("http://localhost:5000/api/users/register", registerUser);
             window.location = '/login';
 
 
+
         } catch (err) {
-            console.log(err.response.data.Error);
-
             setError(err.response.data.Error);
-
             setModalShow(true);
-            // err.response.data.Error && setError(err.response.data.Error);
         }
     }
 
@@ -72,13 +64,10 @@ export default function Register() {
             <div className="col-sm-12 d-flex">
                 <div className="card signin-card">
                     <div className="card-body">
-                    <ErrorModal
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-                error={error}
-
-            />
-                        {/* {error && (<Error message={error} clearError={()=>setError(undefined)}/>)} */}
+                        <ErrorModal
+                            show={modalShow}
+                            onHide={() => setModalShow(false)}
+                            error={error} />
 
                         <h5 className="card-title text-center">Register</h5>
                         <form onSubmit={onSubmit} className="form-signin">

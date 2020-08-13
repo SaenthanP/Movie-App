@@ -5,14 +5,13 @@ import MovieModal from '../components/movie-modal.component';
 import '../components/component.css';
 
 
-import { Button, Dropdown, ButtonGroup, DropdownButton,Col,Row } from 'react-bootstrap';
+import { Button, Dropdown, ButtonGroup, DropdownButton, Col, Row } from 'react-bootstrap';
 
 
 export default function MovieApp() {
     const [movies, setMovies] = useState([]);
     const [movieTitle, setMovieTitle] = useState("");
     const [selectedMovie, setSelectedMovie] = useState([]);
-    const [error, setError] = useState(undefined);
     const [modalShow, setModalShow] = useState(false);
     const [pageNumber, setPageNumber] = useState(1);
     /*
@@ -56,6 +55,10 @@ export default function MovieApp() {
             case 'UPCOMING':
                 readUpcomingMovies(pageNumber);
                 break;
+            default:
+                setMovieApiSource('POPULAR');
+                readPopularMovies(pageNumber);               
+                 break;
 
         }
     }, [pageNumber]);
@@ -128,7 +131,6 @@ export default function MovieApp() {
             searchMovie();
 
         } catch (err) {
-            // err.response.data.Error && setError(err.response.data.Error);
 
         }
     }
@@ -139,19 +141,12 @@ export default function MovieApp() {
             url: 'http://localhost:5000/api/protected/get_search',
             headers: {
                 'Authorization': localStorage.getItem('jwt'),
-
-
             },
             data: {
                 movieTitle,
                 pageNumber
             }
-
-
         }).then(res => {
-
-            console.log(res.data);
-
             setMovies(res.data);
             setMovieTitle("");
         });
@@ -165,7 +160,7 @@ export default function MovieApp() {
     const Movies = (props) => ((
 
         <>
-            <button type="button" className="movie-poster-button" onClick={() => imageClick(props.movie)}><img className="moviePoster movie-card" key={props.movie.key} src={props.movie.poster_path ? "https://image.tmdb.org/t/p/original" + props.movie.poster_path : require("../Assets/no_poster.jpg")} width="200px" height="300px"  ></img></button>
+            <button type="button" className="movie-poster-button" onClick={() => imageClick(props.movie)}><img className="moviePoster movie-card" key={props.movie.key} src={props.movie.poster_path ? "https://image.tmdb.org/t/p/original" + props.movie.poster_path : require("../Assets/no_poster.jpg")} width="200px" height="300px"  alt="movie poster"></img></button>
         </>
     ));
 
@@ -212,9 +207,8 @@ export default function MovieApp() {
                                 size="sm"
                                 variant="secondary"
                                 title="Sort by..."
-                                className="sort-drop-down"
+                                className="sort-drop-down">
 
-                            >
                                 <Dropdown.Item eventKey="1" onClick={() => readPopularMovies(1)}>Get Most Popular</Dropdown.Item>
                                 <Dropdown.Item eventKey="2" onClick={() => readNowPlayingMovies(1)}>Get Now Playing in Theatres</Dropdown.Item>
                                 <Dropdown.Item eventKey="3" onClick={() => readUpcomingMovies(1)}>Get Upcoming Movies</Dropdown.Item>
@@ -238,13 +232,8 @@ export default function MovieApp() {
                         </Col>
                     </Row>
 
-
-
-
                 </div>
-
             </form>
-
 
         </div>
 

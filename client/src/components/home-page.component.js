@@ -1,12 +1,9 @@
 import React,{useEffect} from 'react';
-// import { Link } from 'react-router-dom';
 import '../App.css';
 
-import UserContext from "../context/user.context";
 import Axios from 'axios';
 import TypeWriterEffect from '../components/typewriter.component'
-// import User from '../'
-// import Error from './error.component';
+
 export default function HomePage() {
 
 
@@ -29,26 +26,17 @@ export default function HomePage() {
 
     }
     checkLoggedIn();
-
-
-
-
-
-
-
 }, []);
 
 
-    const onSubmit = async (e) => {
-
-    }
+   
 
     return (
         <div className="parent">
       <div className="section1">
           <div className="row section-1-row">
               <div className="col-sm-12 col-md-6 center-block">  
-              <img className="section-1-img" src={require("../Assets/movie.jpg")}/>
+              <img className="section-1-img" src={require("../Assets/movie.jpg")} alt="movie graphic Designed by rawpixel.com / Freepik"/>
               <div className="row">
                 <div className="col-sm-12" >
                 <a href="http://www.freepik.com" id="credit-id">Designed by rawpixel.com / Freepik</a>

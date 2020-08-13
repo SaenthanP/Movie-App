@@ -1,4 +1,4 @@
-import React, { Component, useContext, useState, useEffect } from 'react';
+import React, {  useState, useEffect } from 'react';
 import '../components/component.css';
 
 import { Modal, Button, Card,Form } from 'react-bootstrap';
@@ -10,6 +10,7 @@ export default function MovieModal(props) {
   const [userId,setUserId]=useState();
 
   useEffect(() => {
+    //creates AbortSignal object.
     const ac = new AbortController();
 
     const isFavouriteFound = async () => {
@@ -33,12 +34,7 @@ export default function MovieModal(props) {
   
     }
     isFavouriteFound();
-    //  getReviews();
-
-
-
-
-
+    //aborts async tasks
     return () => ac.abort();
   });
   useEffect(() => {
@@ -95,24 +91,7 @@ return () => ac.abort();
 
   },[]);
   
-  // const getReviews = async () => {
-  //   await Axios({
-  //     method: 'get',
-  //     url: 'http://localhost:5000/api/protected/reviews',
-  //     headers: {
-  //       'Authorization': localStorage.getItem('jwt'),
 
-
-  //     }
-
-
-  //   }).then(res => {
-  
-  //     setReviews(res.data);
-  //   });
-
-
-  // }
   const handleFavourite = () => {
    
     
@@ -194,8 +173,8 @@ return () => ac.abort();
   }
   const Reviews = (props) => {
     let isUsersReview=false;
-    if (props.review.movieId == props.movie.id) {
-      if(props.review.userId==userId){
+    if (props.review.movieId===props.movie.id) {
+      if(props.review.userId===userId){
         isUsersReview=true;
       }
       return (
@@ -225,7 +204,7 @@ return () => ac.abort();
 const reviewCountUpdate=()=>{
   let count=0;
   for(var reviewIndex=0;reviewIndex<reviews.length;reviewIndex++){
-    if(reviews[reviewIndex].movieId==props.movie.id){
+    if(reviews[reviewIndex].movieId===props.movie.id){
       
       count++;
     }
@@ -244,16 +223,13 @@ const onSubmit = async (e) => {
                 url: 'http://localhost:5000/api/protected/addReview',
                 headers: {
                     'Authorization': localStorage.getItem('jwt'),
-  
-  
                 },
                 data: {
                     "movieId":props.movie.id,
                     "review":userReview
 
                 }
-  
-  
+
             }).then(res => {
               setReviews([ res.data,...reviews]);
               setUserReview("");
@@ -273,18 +249,16 @@ const onSubmit = async (e) => {
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      scrollable={true}
-
-    >
+      scrollable={true}>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           {props.movie.title}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body >
         <div className="row">
           <div className="col-sm-12 col-md-4">
-            <img className="moviePoster movie-card" key={props.movie.key} src={props.movie.poster_path ? "https://image.tmdb.org/t/p/original" + props.movie.poster_path : require("../Assets/no_poster.jpg")} width="200px" height="300px"  ></img>
+            <img className="moviePoster movie-card modal-img" key={props.movie.key} src={props.movie.poster_path ? "https://image.tmdb.org/t/p/original" + props.movie.poster_path : require("../Assets/no_poster.jpg")} width="200px" height="300px" alt="movie poster"></img>
           </div>
           <div className="col-sm-12 col-md-8">
             <h4>Description</h4>
@@ -301,19 +275,13 @@ const onSubmit = async (e) => {
 
           <Form.Control as="textarea" rows="2" placeholder="Add a review" onChange={(e)=>setUserReview(e.target.value)}/>
           </div>
-        
+      
           <button className="btn btn-lg btn-primary btn-block text-uppercase review-btn" type="submit" disabled={userReview<=0}>Post</button>
-
         </form>
-        {/* {reviewCountUpdate()} */}
         {reviews.map(currentReview => <Reviews review={currentReview} key={currentReview._id} movie={props.movie} />)}
-
       </Modal.Body>
       <Modal.Footer>
         {handleFavourite()}
-
-        {/* <FavouriteButton movie={props.movie} isFound={isFavouriteFound} /> */}
-
         <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>
     </Modal>

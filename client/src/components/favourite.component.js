@@ -1,7 +1,7 @@
-import React, { Component, useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../components/component.css';
 
-import { Modal, Button, Table, Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import Axios from 'axios';
 export default function FavouritePage(props) {
     const [favouriteMovies, setFavouriteMovies] = useState([]);
@@ -24,15 +24,7 @@ export default function FavouritePage(props) {
 
         }
         checkLoggedIn();
-
         readFavouriteMovies();
-
-
-
-
-
-
-
     }, []);
     const readFavouriteMovies = async () => {
         await Axios({
@@ -52,12 +44,7 @@ export default function FavouritePage(props) {
           url: 'http://localhost:5000/api/protected/'+id,
           headers: {
             'Authorization': localStorage.getItem('jwt'),
-      
-      
           },
-      
-      
-      
         }).then(res => {
           setFavouriteMovies(res.data);
         });
@@ -68,7 +55,7 @@ export default function FavouritePage(props) {
 
                 <div className="row">
                     <div className="col-sm-3">
-                        <img className="moviePoster movie-card" key={props.movie.key} src={props.movie.posterPath ? "https://image.tmdb.org/t/p/original" + props.movie.posterPath : require("../Assets/no_poster.jpg")} width="210px" height="310px"  ></img>
+                        <img className="moviePoster movie-card" key={props.movie.key} src={props.movie.posterPath ? "https://image.tmdb.org/t/p/original" + props.movie.posterPath : require("../Assets/no_poster.jpg")} width="210px" height="310px" alt="movie poster" ></img>
                         <div className="row">
                             <div className="col-sm-12">
                                 <p><b>{props.movie.title}</b></p>
@@ -94,8 +81,6 @@ export default function FavouritePage(props) {
             <div className="container-fluid favourite">
                 {favouriteMovies.map(currentMovie => <Movie movie={currentMovie} key={currentMovie._id} />)}
                 {favouriteMovies.length<=0&&<h4>There are no favourites...Please go back and favourite the best ones</h4>}
-
-            
             </div>
         </div>
     );
