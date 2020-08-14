@@ -128,7 +128,7 @@ export default function MovieApp() {
             e.preventDefault();
             e.target.reset();
 
-            searchMovie();
+            searchMovie(1);
 
         } catch (err) {
 
@@ -148,7 +148,7 @@ export default function MovieApp() {
             }
         }).then(res => {
             setMovies(res.data);
-            setMovieTitle("");
+            // setMovieTitle("");
         });
 
     }

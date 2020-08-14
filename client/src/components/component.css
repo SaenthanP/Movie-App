@@ -5,7 +5,32 @@
 }
 div.section1{
     background-color: rgb(230, 200, 162);
-  
+  /* background-image: url("../Assets/test.jpg"); */
+background-repeat: none;  
+
+  -webkit-background-size:cover;
+  -moz-background-size:cover;
+  -o-background-size:cover;
+  background-size:cover;
+  background-position:center;
+  height: 100%;
+
+}
+.info-list{
+    
+    margin-top: 4rem;
+    font-size: 20px;
+    text-align: left;
+    padding-bottom: 2rem;
+}
+
+div.section2{
+    background-color: antiquewhite;
+/* margin: auto; */
+margin-top:3rem;
+
+
+
 }
 
 .Typewriter {
@@ -28,7 +53,18 @@ div.section1{
       margin-right: 0;
   }
 img.section-1-img{
-    width: 50%;
+    width: 55%;
+}
+
+.info-list.col-md-4{
+    padding: 0;
+}
+img.section-2-img{
+    /* padding-top:2rem; */
+
+    width: 100%;
+    padding-left: none;
+    padding-right:none;
 }
 
 #credit-id{
@@ -157,10 +193,19 @@ img.moviePoster{
     }
     
 @media(max-width:700px){
-   
-
+    .Typewriter{
+        padding-top:1rem;
+        padding-bottom:1rem
+    }
+    div.info-list{
+   margin-top:0rem;
+}
     img.section-1-img{
         width: 90%;
+    }
+    img.section-2-img{
+        width: 90%;
+        margin-bottom: 1rem;
     }
     .title-header{
         padding-top: 1rem;
@@ -168,7 +213,7 @@ img.moviePoster{
     }
     .movie-search{
         margin-left: 4.5rem;
-        width: 8rem;
+        width: 10.5rem;
     }
     .search-btn{
         float: left;
@@ -180,14 +225,5 @@ img.moviePoster{
     .modal-img{
 margin-left: 6.5rem;
     }
-    /* .back-page-btn{
-        margin-left: 2rem;
-    } */
-    /* .movie-search{
-        width: 15rem;
-    }
-    .search-btn{
-        padding: 0 2rem;
-        margin-right: 20px;
-    } */
+   
   }
